@@ -1,0 +1,44 @@
+
+body{
+    margin:0;
+    background: none;
+    padding:0;
+    font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 100;
+}
+
+p{
+    font-size: 1rem;
+    max-width: 65ch;
+}
+
+img{
+    max-width: 300px;;
+}
+
+.flex_row{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex_col{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.order_now{
+    width: 100%;
+    background: #7E1612;
+    color:#FFE2C4;
+
+    font-size: 1.5rem;
+
+    >*>*{
+        padding: 13px 30px;
+    }
+
+}
