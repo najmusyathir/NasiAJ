@@ -75,16 +75,16 @@ function displayOrderDetails(orderDetails) {
 
     orderDetails.cartItems.forEach((item) => {
       const li = document.createElement("li");
-      li.textContent = `${item.itemName} - $${item.price.toFixed(2)} x ${
+      li.textContent = `${item.itemName} - RM${item.price.toFixed(2)} x ${
         item.quantity
-      } = $${item.total.toFixed(2)}`;
+      } = RM${item.total.toFixed(2)}`;
       ul.appendChild(li);
     });
 
     receiptContainer.appendChild(ul);
 
     // Display total price
-    receiptContainer.innerHTML += `<p>Total Price: $${orderDetails.totalPrice}</p>`;
+    receiptContainer.innerHTML += `<p>Total Price: RM${orderDetails.totalPrice}</p>`;
   } else {
     receiptContainer.innerHTML += "<p>No items in the order.</p>";
   }
