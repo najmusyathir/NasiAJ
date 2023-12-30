@@ -1,0 +1,47 @@
+{
+  "orderId": "ORDLQS5UJSA",
+  "orderDate": "2023-12-30T14:31:03.082Z",
+  "customer": {
+    "customerName": "Irfan",
+    "phoneNumber": "018-2964039",
+    "address": "INTANA RIA APARTMENT, NO 1-1-10, JALAN 7/4, SEKSYEN 7, 43650, BANDAR BARU BANGI, SELANGOR"
+  },
+  "items": [
+    {
+      "itemId": "1",
+      "itemName": "Product A",
+      "price": 9.8,
+      "quantity": 1,
+      "total": 9.8
+    },
+    {
+      "itemId": "2",
+      "itemName": "Product B",
+      "price": 54.5,
+      "quantity": 1,
+      "total": 54.5
+    },
+    {
+      "itemId": "3",
+      "itemName": "Product C",
+      "price": 20,
+      "quantity": 1,
+      "total": 20
+    },
+    {
+      "itemId": "4",
+      "itemName": "Product D",
+      "price": 35.3,
+      "quantity": 1,
+      "total": 35.3
+    },
+    {
+      "itemId": "5",
+      "itemName": "Product E",
+      "price": 12.3,
+      "quantity": 1,
+      "total": 12.3
+    }
+  ],
+  "totalPrice": "131.90"
+}
