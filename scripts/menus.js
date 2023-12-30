@@ -34,9 +34,9 @@ function updateCart() {
   cartItems.forEach((item) => {
     const listItem = document.createElement("li");
     listItem.innerHTML = `
-        <span>${item.itemName} - $${item.price.toFixed(2)} x ${
+        <span>${item.itemName} - RM${item.price.toFixed(2)} x ${
       item.quantity
-    } = $${item.total.toFixed(2)}</span>
+    } = RM${item.total.toFixed(2)}</span>
         <button class="quantity-btn" data-id="${
           item.itemId
         }" data-action="decrease">Decrease</button>
@@ -139,7 +139,7 @@ function generateMenu() {
         const menuItem = document.createElement("div");
         menuItem.className = "grid_item";
         menuItem.innerHTML = `
-          <img src="../assets/menu_ayam_cincang.jpg" />
+          <img src="${product.image}" />
           <p id="menu_title">${product.itemName}</p>
           <p id="menu_price">RM${product.price.toFixed(2)}</p>
 
