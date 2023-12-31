@@ -9,66 +9,101 @@ function getCurrentDateTime() {
   return now.toISOString();
 }
 
+function encodeFileToBase64(file, callback) {
+  const reader = new FileReader();
+
+  reader.onload = function () {
+    callback(reader.result.split(',')[1]); // Extract base64 part from data URL
+  };
+
+  reader.readAsDataURL(file);
+}
+
 function handleFormSubmission() {
   const customerName = document.getElementById("customer-name").value;
   const phoneNumber = document.getElementById("cust-phone").value;
   const address = document.getElementById("cust-address").value;
-  const orderReceipt = document.getElementById("customer-pay").value;
+  const orderReceiptInput = document.getElementById("customer-pay");
   const orderId = generateOrderId();
   const orderDate = getCurrentDateTime();
 
   const newOrder = {
-      orderId,
-      orderDate,
-      customer: {
-          customerName,
-          phoneNumber,
-          address,
-      },
-      items: orderDetails.cartItems,
-      totalPrice: orderDetails.totalPrice,
-      orderReceipt,
+    orderId,
+    orderDate,
+    customer: {
+      customerName,
+      phoneNumber,
+      address,
+    },
+    items: orderDetails.cartItems,
+    totalPrice: orderDetails.totalPrice,
+    orderReceipt: '', // Initialize orderReceipt
+    fileType: '', 
   };
 
-  const jsonContent = JSON.stringify(newOrder, null, 2);
+  const orderReceiptFile = orderReceiptInput.files[0];
 
-  const blob = new Blob([jsonContent], { type: "application/json" });
+  if (orderReceiptFile) {
+    // Extract file extension
+    const fileName = orderReceiptFile.name;
+    const fileExtension = fileName.split('.').pop().toLowerCase();
 
-  const link = document.createElement("a");
+    // Set fileType based on file extension
+    newOrder.fileType = fileExtension;
+  }
 
-  link.href = URL.createObjectURL(blob);
+  // Encode the file to base64
+  encodeFileToBase64(orderReceiptFile, function (base64Data) {
+    
+    // Update orderReceipt with the encoded data
+    newOrder.orderReceipt = base64Data;
 
-  link.download = "order.json";
+    // Continue with the rest of the code (inside the callback)
+    const jsonContent = JSON.stringify(newOrder, null, 2);
 
-  document.body.appendChild(link);
+    // const blob = new Blob([jsonContent], { type: "application/json" });
 
-  link.click();
+    const link = document.createElement("a");
 
-  document.body.removeChild(link);
+    // link.href = URL.createObjectURL(blob);
 
-  fetch("https://nasi-aj-backend-service.onrender.com/nasi_aj/api/submitOrder", {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json",
-      },
-      body: jsonContent,
-  })
+    link.download = "order.json";
+
+    document.body.appendChild(link);
+
+    // link.click();
+
+    document.body.removeChild(link);
+
+    console.log(jsonContent);
+
+    fetch(
+      "https://nasi-aj-backend-service.onrender.com/nasi_aj/api/v2/submitOrder",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Add this line
+        },
+        body: jsonContent,
+      }
+    )
       .then((response) => {
-          if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
-          }
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
 
-          return response.json();
+        return response.json();
       })
       .then((data) => {
-          console.log("Order submitted successfully:", data);
-          alert("Order completed. Thank you!");
+        console.log("Order submitted successfully:", data);
+        alert("Order completed. Thank you!");
       })
       .catch((error) => {
-          console.error("Error submitting order:", error);
-          alert("Error submitting order. Please try again.");
+        console.error("Error submitting order:", error);
+        alert("Error submitting order. Please try again.");
       });
-}  
+  });
+}
 
 const finishBtn = document.getElementById("finish-btn");
 finishBtn.addEventListener("click", handleFormSubmission);
@@ -92,7 +127,8 @@ function displayOrderDetails(orderDetails) {
 
     // Display total price
     receiptContainer.innerHTML += `<p>Total Price: RM${orderDetails.totalPrice}</p>`;
-    receiptContainer.innerHTML += "<img style='width: 30%;height: 100%;' src='../assets/qr_mb.jpg' /><img style='width: 30%;height: 100%;' src='../assets/qr_tng.jpg' />";
+    receiptContainer.innerHTML +=
+      "<img style='width: 30%;height: 100%;' src='../assets/qr_mb.jpg' /><img style='width: 30%;height: 100%;' src='../assets/qr_tng.jpg' />";
   } else {
     receiptContainer.innerHTML += "<p>No items in the order.</p>";
   }
