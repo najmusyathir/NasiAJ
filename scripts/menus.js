@@ -34,16 +34,16 @@ function updateCart() {
   cartItems.forEach((item) => {
     const listItem = document.createElement("li");
     listItem.innerHTML = `
-        <span>${item.itemName} - RM${item.price.toFixed(2)} x ${
-      item.quantity
-    } = RM${item.total.toFixed(2)}</span>
-        <button class="quantity-btn" data-id="${
-          item.itemId
-        }" data-action="decrease">Decrease</button>
-        <button class="quantity-btn" data-id="${
-          item.itemId
-        }" data-action="increase">Increase</button>
-        <button class="delete-btn" data-id="${item.itemId}">Delete</button>
+        <div class="cart_item_details">
+        <br><strong>${item.itemName}</strong><br>RM${item.price.toFixed(2)}
+        <br>Quantity: ${item.quantity} 
+        <br><strong>Total: RM${item.total.toFixed(2)}</strong></div>
+        <br>
+        <div class="item_btn">
+          <button class="quantity-btn" data-id="${item.itemId}" data-action="decrease">-</button>
+          <button class="quantity-btn" data-id="${item.itemId}" data-action="increase">+</button>
+          <button class="delete-btn" data-id="${item.itemId}">×</button>
+        </div>
       `;
     cartList.appendChild(listItem);
 
@@ -91,17 +91,14 @@ function handleDeleteButtonClick(event) {
 
 function clearCart() {
   const checkoutContainer = document.getElementById("cart");
-
+ 
   const checkoutItem = document.createElement("div");
   checkoutItem.className = "checkout";
-  checkoutItem.innerHTML = `
-    <button class='checkout'>Checkout</button>
-      `;
 
   checkoutContainer.appendChild(checkoutItem);
 
-  const checkoutBtn = checkoutItem.querySelector(".checkout");
-  checkoutBtn.addEventListener("click", function () {
+  const ckoutbtn = document.getElementById("checkout");
+  ckoutbtn.addEventListener("click", function () {
     alert("Checkout completed");
     const cartList = document.getElementById("cart-items");
     const totalElement = document.getElementById("total");
@@ -139,21 +136,17 @@ function generateMenu() {
         const menuItem = document.createElement("div");
         menuItem.className = "grid_item";
         menuItem.innerHTML = `
+        <div>
           <img src="${product.image}" />
           <p id="menu_title">${product.itemName}</p>
-          <p id="menu_price">RM${product.price.toFixed(2)}</p>
+        </div>
 
-          <label for="quantity-${product.itemId}">Quantity:</label>
-          <input type="number" id="quantity-${product.itemId}" name="quantity-${
-          product.itemId
-        }" min="1" value="1">
-          <button class="add-to-cart-btn" data-id="${
-            product.itemId
-          }" data-name="${product.itemName}" data-price="${
-          product.price
-        }" id="add_btn">
-              Add to Cart
-          </button>`;
+        <div>
+          <p id="menu_price">RM${product.price.toFixed(2)}</p>
+          <label class="hidden_class" for="quantity-${product.itemId}">Quantity:</label>
+          <input class="hidden_class" type="number" id="quantity-${product.itemId}" name="quantity-${product.itemId}" min="1" value="1">
+          <button class="add-to-cart-btn" data-id="${product.itemId}" data-name="${product.itemName}" data-price="${product.price}" id="add_btn">Add to Cart</button>
+        </div>`;
 
         categoryContainer.appendChild(menuItem);
 
