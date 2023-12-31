@@ -10,62 +10,69 @@ function getCurrentDateTime() {
 }
 
 function handleFormSubmission() {
-    const customerName = document.getElementById("customer-name").value;
-    const phoneNumber = document.getElementById("cust-phone").value;
-    const address = document.getElementById("cust-address").value;
-  
-    // Generate unique order ID and get current date and time
-    const orderId = generateOrderId();
-    const orderDate = getCurrentDateTime();
-  
-    // Combine customer information with order details
-    const newOrder = {
+  const customerName = document.getElementById("customer-name").value;
+  const phoneNumber = document.getElementById("cust-phone").value;
+  const address = document.getElementById("cust-address").value;
+  const orderReceipt = document.getElementById("customer-pay").value;
+  const orderId = generateOrderId();
+  const orderDate = getCurrentDateTime();
+
+  const newOrder = {
       orderId,
       orderDate,
       customer: {
-        customerName,
-        phoneNumber,
-        address,
+          customerName,
+          phoneNumber,
+          address,
       },
       items: orderDetails.cartItems,
       totalPrice: orderDetails.totalPrice,
-    };
-  
-    // Convert the JavaScript object to JSON
-    const jsonContent = JSON.stringify(newOrder, null, 2);
-  
-    // Create a Blob with the JSON content
-    const blob = new Blob([jsonContent], { type: "application/json" });
-  
-    // Create a link element
-    const link = document.createElement("a");
-  
-    // Set the href attribute to a data URL representing the Blob
-    link.href = URL.createObjectURL(blob);
-  
-    // Set the download attribute to specify the filename
-    link.download = "order.json";
-  
-    // Append the link to the document
-    document.body.appendChild(link);
-  
-    // Trigger a click event on the link to start the download
-    link.click();
-  
-    // Remove the link from the document
-    document.body.removeChild(link);
-  
-    // Optionally, you can redirect the user to a thank you page or do other actions
-    alert("Order completed. Thank you!");
-  }
-  
-  
+      orderReceipt,
+  };
 
-// Call the handleFormSubmission function when the "Finish" button is clicked
+  const jsonContent = JSON.stringify(newOrder, null, 2);
+
+  const blob = new Blob([jsonContent], { type: "application/json" });
+
+  const link = document.createElement("a");
+
+  link.href = URL.createObjectURL(blob);
+
+  link.download = "order.json";
+
+  document.body.appendChild(link);
+
+  link.click();
+
+  document.body.removeChild(link);
+
+  fetch("https://nasi-aj-backend-service.onrender.com/nasi_aj/api/submitOrder", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+      },
+      body: jsonContent,
+  })
+      .then((response) => {
+          if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+
+          return response.json();
+      })
+      .then((data) => {
+          console.log("Order submitted successfully:", data);
+          alert("Order completed. Thank you!");
+      })
+      .catch((error) => {
+          console.error("Error submitting order:", error);
+          alert("Error submitting order. Please try again.");
+      });
+}  
+
 const finishBtn = document.getElementById("finish-btn");
 finishBtn.addEventListener("click", handleFormSubmission);
 
-// Function to display the order details on the receipt page
 function displayOrderDetails(orderDetails) {
   const receiptContainer = document.getElementById("receipt-container");
   receiptContainer.innerHTML = "<h2>Your Order Details:</h2>";
@@ -85,6 +92,7 @@ function displayOrderDetails(orderDetails) {
 
     // Display total price
     receiptContainer.innerHTML += `<p>Total Price: RM${orderDetails.totalPrice}</p>`;
+    receiptContainer.innerHTML += "<img style='width: 30%;height: 100%;' src='../assets/qr_mb.jpg' /><img style='width: 30%;height: 100%;' src='../assets/qr_tng.jpg' />";
   } else {
     receiptContainer.innerHTML += "<p>No items in the order.</p>";
   }

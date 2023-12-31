@@ -96,6 +96,11 @@ img {
     width: 40%;
 }
 
+.test {
+    display: flex;
+    justify-content: center;
+}
+
 .order_now {
     width: 100%;
     background: #7E1612;
@@ -115,7 +120,7 @@ img {
 
     &:hover {
         cursor: pointer;
-        scale: 1.005;
+        scale: 1.05;
     }
 
     h2 {

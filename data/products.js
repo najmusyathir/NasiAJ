@@ -9,7 +9,7 @@ export const productsData = {
     },
     {
       itemId: "2",
-      itemName: "Nasi + Sup Daging",
+      itemName: "Nasi Sup Daging",
       image: "../assets/menu_sup_daging.jpg",
       price: 10.5,
     },
