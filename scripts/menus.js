@@ -8,8 +8,7 @@ function addToCart(itemId, itemName, price, quantity) {
 
   if (existingItem) {
     existingItem.quantity += quantity;
-    existingItem.total =
-      parseFloat(existingItem.price) * existingItem.quantity;
+    existingItem.total = parseFloat(existingItem.price) * existingItem.quantity;
   } else {
     const total = parseFloat(price) * parseInt(quantity);
     cartItems.push({
@@ -40,8 +39,12 @@ function updateCart() {
         <br><strong>Total: RM${item.total.toFixed(2)}</strong></div>
         <br>
         <div class="item_btn">
-          <button class="quantity-btn" data-id="${item.itemId}" data-action="decrease">-</button>
-          <button class="quantity-btn" data-id="${item.itemId}" data-action="increase">+</button>
+          <button class="quantity-btn" data-id="${
+            item.itemId
+          }" data-action="decrease">-</button>
+          <button class="quantity-btn" data-id="${
+            item.itemId
+          }" data-action="increase">+</button>
           <button class="delete-btn" data-id="${item.itemId}">×</button>
         </div>
       `;
@@ -61,6 +64,21 @@ function updateCart() {
   deleteButtons.forEach((button) => {
     button.addEventListener("click", handleDeleteButtonClick);
   });
+
+  updateTotalQuantity();
+}
+
+function updateTotalQuantity() {
+  const totalQuantity = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
+  const cartQuantityElement = document.getElementById("cart-quantity");
+  cartQuantityElement.textContent = totalQuantity;
+}
+
+function updateQuantityOnCartChange() {
+  updateTotalQuantity();
 }
 
 function handleQuantityButtonClick(event) {
@@ -76,22 +94,23 @@ function handleQuantityButtonClick(event) {
       currentItem.quantity -= 1;
     }
 
-    currentItem.total =
-      parseFloat(currentItem.price) * currentItem.quantity;
+    currentItem.total = parseFloat(currentItem.price) * currentItem.quantity;
   }
 
   updateCart();
+  updateQuantityOnCartChange();
 }
 
 function handleDeleteButtonClick(event) {
   const itemId = event.target.getAttribute("data-id");
   cartItems = cartItems.filter((item) => item.itemId !== itemId);
   updateCart();
+  updateQuantityOnCartChange();
 }
 
 function clearCart() {
   const checkoutContainer = document.getElementById("cart");
- 
+
   const checkoutItem = document.createElement("div");
   checkoutItem.className = "checkout";
 
@@ -112,7 +131,8 @@ function clearCart() {
     cartItems = [];
     updateCart();
 
-    window.location.href = "../html/receipt.html?orderDetails=" + JSON.stringify(orderDetails);
+    window.location.href =
+      "../html/receipt.html?orderDetails=" + JSON.stringify(orderDetails);
   });
 }
 
@@ -143,9 +163,17 @@ function generateMenu() {
 
         <div>
           <p id="menu_price">RM${product.price.toFixed(2)}</p>
-          <label class="hidden_class" for="quantity-${product.itemId}">Quantity:</label>
-          <input class="hidden_class" type="number" id="quantity-${product.itemId}" name="quantity-${product.itemId}" min="1" value="1">
-          <button class="add-to-cart-btn" data-id="${product.itemId}" data-name="${product.itemName}" data-price="${product.price}" id="add_btn">Add to Cart</button>
+          <label class="hidden_class" for="quantity-${
+            product.itemId
+          }">Quantity:</label>
+          <input class="hidden_class" type="number" id="quantity-${
+            product.itemId
+          }" name="quantity-${product.itemId}" min="1" value="1">
+          <button class="add-to-cart-btn" data-id="${
+            product.itemId
+          }" data-name="${product.itemName}" data-price="${
+          product.price
+        }" id="add_btn">Add to Cart</button>
         </div>`;
 
         categoryContainer.appendChild(menuItem);
@@ -167,5 +195,5 @@ function generateMenu() {
   clearCart();
   updateCart();
 }
-
+updateTotalQuantity();
 generateMenu();

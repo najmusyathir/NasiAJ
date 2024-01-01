@@ -1,71 +1,114 @@
-// Function to generate a unique order ID
 function generateOrderId() {
   return "ORD" + Date.now().toString(36).toUpperCase();
 }
 
-// Function to get the current date and time
-function getCurrentDateTime() {
+function getCurrentDateTimeInMalaysia() {
   const now = new Date();
-  return now.toISOString();
+  const malaysiaTime = new Date(now.getTime() + (8 * 60 * 60 * 1000)); // UTC+8 in milliseconds
+
+  return malaysiaTime.toISOString();
+}
+
+
+function encodeFileToBase64(file, callback) {
+  const reader = new FileReader();
+
+  reader.onload = function () {
+    callback(reader.result.split(',')[1]); // Extract base64 part from data URL
+  };
+
+  reader.readAsDataURL(file);
 }
 
 function handleFormSubmission() {
-    const customerName = document.getElementById("customer-name").value;
-    const phoneNumber = document.getElementById("cust-phone").value;
-    const address = document.getElementById("cust-address").value;
-  
-    // Generate unique order ID and get current date and time
-    const orderId = generateOrderId();
-    const orderDate = getCurrentDateTime();
-  
-    // Combine customer information with order details
-    const newOrder = {
-      orderId,
-      orderDate,
-      customer: {
-        customerName,
-        phoneNumber,
-        address,
-      },
-      items: orderDetails.cartItems,
-      totalPrice: orderDetails.totalPrice,
-    };
-  
-    // Convert the JavaScript object to JSON
-    const jsonContent = JSON.stringify(newOrder, null, 2);
-  
-    // Create a Blob with the JSON content
-    const blob = new Blob([jsonContent], { type: "application/json" });
-  
-    // Create a link element
-    const link = document.createElement("a");
-  
-    // Set the href attribute to a data URL representing the Blob
-    link.href = URL.createObjectURL(blob);
-  
-    // Set the download attribute to specify the filename
-    link.download = "order.json";
-  
-    // Append the link to the document
-    document.body.appendChild(link);
-  
-    // Trigger a click event on the link to start the download
-    link.click();
-  
-    // Remove the link from the document
-    document.body.removeChild(link);
-  
-    // Optionally, you can redirect the user to a thank you page or do other actions
-    alert("Order completed. Thank you!");
-  }
-  
-  
+  const customerName = document.getElementById("customer-name").value;
+  const phoneNumber = document.getElementById("cust-phone").value;
+  const address = document.getElementById("cust-address").value;
+  const orderReceiptInput = document.getElementById("customer-pay");
+  const orderId = generateOrderId();
+  const orderDate = getCurrentDateTimeInMalaysia();
 
-// Call the handleFormSubmission function when the "Finish" button is clicked
+  const newOrder = {
+    orderId,
+    orderDate,
+    customer: {
+      customerName,
+      phoneNumber,
+      address,
+    },
+    items: orderDetails.cartItems,
+    totalPrice: orderDetails.totalPrice,
+    orderReceipt: '', // Initialize orderReceipt
+    fileType: '', 
+  };
+
+  const orderReceiptFile = orderReceiptInput.files[0];
+
+  if (orderReceiptFile) {
+    // Extract file extension
+    const fileName = orderReceiptFile.name;
+    const fileExtension = fileName.split('.').pop().toLowerCase();
+
+    // Set fileType based on file extension
+    newOrder.fileType = fileExtension;
+  }
+
+  // Encode the file to base64
+  encodeFileToBase64(orderReceiptFile, function (base64Data) {
+    
+    // Update orderReceipt with the encoded data
+    newOrder.orderReceipt = base64Data;
+
+    // Continue with the rest of the code (inside the callback)
+    const jsonContent = JSON.stringify(newOrder, null, 2);
+
+    // const blob = new Blob([jsonContent], { type: "application/json" });
+
+    const link = document.createElement("a");
+
+    // link.href = URL.createObjectURL(blob);
+
+    link.download = "order.json";
+
+    document.body.appendChild(link);
+
+    // link.click();
+
+    document.body.removeChild(link);
+
+    console.log(jsonContent);
+
+    fetch(
+      "https://nasi-aj-backend-service.onrender.com/nasi_aj/api/v2/submitOrder",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Add this line
+        },
+        body: jsonContent,
+      }
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Order submitted successfully:", data);
+        alert("Order completed. Thank you!");
+      })
+      .catch((error) => {
+        console.error("Error submitting order:", error);
+        alert("Error submitting order. Please try again.");
+      });
+  });
+}
+
 const finishBtn = document.getElementById("finish-btn");
 finishBtn.addEventListener("click", handleFormSubmission);
 
-// Function to display the order details on the receipt page
 function displayOrderDetails(orderDetails) {
   const receiptContainer = document.getElementById("receipt-container");
   receiptContainer.innerHTML = "<h2>Your Order Details:</h2>";
@@ -85,6 +128,8 @@ function displayOrderDetails(orderDetails) {
 
     // Display total price
     receiptContainer.innerHTML += `<p>Total Price: RM${orderDetails.totalPrice}</p>`;
+    receiptContainer.innerHTML +=
+      "<img style='width: 30%;height: 100%;' src='../assets/qr_mb.jpg' /><img style='width: 30%;height: 100%;' src='../assets/qr_tng.jpg' />";
   } else {
     receiptContainer.innerHTML += "<p>No items in the order.</p>";
   }
