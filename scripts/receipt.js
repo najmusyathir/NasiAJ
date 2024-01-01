@@ -1,13 +1,18 @@
-// Function to generate a unique order ID
 function generateOrderId() {
-  return "ORD" + Date.now().toString(36).toUpperCase();
+  const options = { timeZone: 'Asia/Kuala_Lumpur' };
+    const malaysiaTime = new Date().toLocaleString('en-MY', options);
+
+  return "ORD" + Date.parse(malaysiaTime).toString(36).toUpperCase();
 }
 
-// Function to get the current date and time
+
 function getCurrentDateTime() {
   const now = new Date();
-  return now.toISOString();
+  
+  const options = { timeZone: 'Asia/Kuala_Lumpur' };
+  return now.toLocaleString('en-MY', options);
 }
+
 
 function encodeFileToBase64(file, callback) {
   const reader = new FileReader();
@@ -77,31 +82,31 @@ function handleFormSubmission() {
 
     console.log(jsonContent);
 
-    fetch(
-      "https://nasi-aj-backend-service.onrender.com/nasi_aj/api/v2/submitOrder",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", // Add this line
-        },
-        body: jsonContent,
-      }
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+    // fetch(
+    //   "https://nasi-aj-backend-service.onrender.com/nasi_aj/api/v2/submitOrder",
+    //   {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json", // Add this line
+    //     },
+    //     body: jsonContent,
+    //   }
+    // )
+    //   .then((response) => {
+    //     if (!response.ok) {
+    //       throw new Error(`HTTP error! Status: ${response.status}`);
+    //     }
 
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Order submitted successfully:", data);
-        alert("Order completed. Thank you!");
-      })
-      .catch((error) => {
-        console.error("Error submitting order:", error);
-        alert("Error submitting order. Please try again.");
-      });
+    //     return response.json();
+    //   })
+    //   .then((data) => {
+    //     console.log("Order submitted successfully:", data);
+    //     alert("Order completed. Thank you!");
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error submitting order:", error);
+    //     alert("Error submitting order. Please try again.");
+    //   });
   });
 }
 
