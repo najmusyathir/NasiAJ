@@ -1,16 +1,12 @@
 function generateOrderId() {
-  const options = { timeZone: 'Asia/Kuala_Lumpur' };
-    const malaysiaTime = new Date().toLocaleString('en-MY', options);
-
-  return "ORD" + Date.parse(malaysiaTime).toString(36).toUpperCase();
+  return "ORD" + Date.now().toString(36).toUpperCase();
 }
 
-
-function getCurrentDateTime() {
+function getCurrentDateTimeInMalaysia() {
   const now = new Date();
-  
-  const options = { timeZone: 'Asia/Kuala_Lumpur' };
-  return now.toLocaleString('en-MY', options);
+  const malaysiaTime = new Date(now.getTime() + (8 * 60 * 60 * 1000)); // UTC+8 in milliseconds
+
+  return malaysiaTime.toISOString();
 }
 
 
@@ -30,7 +26,7 @@ function handleFormSubmission() {
   const address = document.getElementById("cust-address").value;
   const orderReceiptInput = document.getElementById("customer-pay");
   const orderId = generateOrderId();
-  const orderDate = getCurrentDateTime();
+  const orderDate = getCurrentDateTimeInMalaysia();
 
   const newOrder = {
     orderId,
