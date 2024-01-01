@@ -99,6 +99,11 @@ img {
     width: 40%;
 }
 
+#car {
+    max-width: 100px;
+    padding: 20px 50px;
+}
+
 .order_now {
     width: 100%;
     background: #7E1612;
@@ -212,7 +217,7 @@ img {
 
 .contact_us {
     position: relative;
-    padding: 50px 0;
+    padding: 1vw 0;
     overflow: hidden;
 
     &:hover {
@@ -256,14 +261,19 @@ img {
         height: 100%;
         overflow: visible;
 
-        >*:nth-child(1) {
+        >* {
             height: 100%;
             width: 100%;
-
-            transition: 300ms;
+            transition: 250ms;
 
             &:hover {
                 opacity: 0;
+            }
+
+            >* {
+                margin: 0;
+                width: 100%;
+                height: 100%;
             }
         }
     }
@@ -606,6 +616,35 @@ img {
 
 @media screen and (max-width:1150px) {
 
+    p {
+        font-size: 2vw;
+    }
+
+    h2 {
+        font-size: 4vw;
+    }
+
+    h3 {
+        font-size: 3vw;
+    }
+
+    .item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    .main {
+        width: 100vw;
+    }
+
+    .mini_menu {
+        >*>* {
+            height: calc((100vw / 3) - 3px);
+        }
+    }
+
     .grid_3xn {
         grid-template-columns: auto auto;
         grid-template-rows: auto;
@@ -792,6 +831,23 @@ img {
 }
 
 @media screen and (max-width:800px) {
+    p {
+        font-size: 2vw;
+    }
+
+    h2 {
+        font-size: 4vw;
+    }
+
+    h3 {
+        font-size: 3vw;
+    }
+
+    #car {
+        min-width: none;
+        width: 15vw;
+        padding: 2vw;
+    }
 
     .grid_3xn {
         width: 100%;
@@ -991,6 +1047,29 @@ img {
 
 @media screen and (max-width:500px) {
 
+    p {
+        font-size: 4vw;
+    }
+
+    h2 {
+        font-size: 5vw;
+        font-weight: 500;
+        letter-spacing: 1px;
+    }
+
+    h3 {
+        font-size: 4vw;
+        font-weight: 500;
+        letter-spacing: 1px;
+    }
+
+    .about_us {
+        padding: 5vw 0 0;
+
+        >*>* {
+            margin-bottom: 5vw;
+        }
+    }
 
     .menu {
         padding: 0;
