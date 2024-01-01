@@ -82,31 +82,31 @@ function handleFormSubmission() {
 
     console.log(jsonContent);
 
-    // fetch(
-    //   "https://nasi-aj-backend-service.onrender.com/nasi_aj/api/v2/submitOrder",
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json", // Add this line
-    //     },
-    //     body: jsonContent,
-    //   }
-    // )
-    //   .then((response) => {
-    //     if (!response.ok) {
-    //       throw new Error(`HTTP error! Status: ${response.status}`);
-    //     }
+    fetch(
+      "https://nasi-aj-backend-service.onrender.com/nasi_aj/api/v2/submitOrder",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Add this line
+        },
+        body: jsonContent,
+      }
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
 
-    //     return response.json();
-    //   })
-    //   .then((data) => {
-    //     console.log("Order submitted successfully:", data);
-    //     alert("Order completed. Thank you!");
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error submitting order:", error);
-    //     alert("Error submitting order. Please try again.");
-    //   });
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Order submitted successfully:", data);
+        alert("Order completed. Thank you!");
+      })
+      .catch((error) => {
+        console.error("Error submitting order:", error);
+        alert("Error submitting order. Please try again.");
+      });
   });
 }
 
