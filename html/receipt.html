@@ -17,6 +17,12 @@
             margin-top: 20px;
         }
 
+        .qr {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
         form {
             margin-top: 20px;
         }
@@ -24,7 +30,9 @@
 </head>
 <body>
     <h1>Order Receipt</h1>
-    <div class="receipt" id="receipt-container"></div>
+    <div class="receipt" id="receipt-container">
+        <div class="qr" id="qr-container"></div>
+    </div>
 
     <form id="customer-form">
         <label for="customer-name">Customer Name:</label>
@@ -35,8 +43,12 @@
 
         <label for="cust-address">Customer Address:</label>
         <input type="text" id="cust-address" name="cust-address" required>
+        
+        <label for="customer-pay">Payment Receipt:</label>
+        <input type="file" id="customer-pay" name="customer-pay" required>
 
         <button type="button" id="finish-btn">Finish</button>
+
     </form>
 
     <script type="module" src="/scripts/receipt.js"></script>

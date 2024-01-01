@@ -1,6 +1,6 @@
 {
-  "orderId": "ORDLQS5UJSA",
-  "orderDate": "2023-12-30T14:31:03.082Z",
+  "orderId": "ORDLQTEYB1K",
+  "orderDate": "2023-12-31T11:33:41.096Z",
   "customer": {
     "customerName": "Irfan",
     "phoneNumber": "018-2964039",
@@ -8,40 +8,27 @@
   },
   "items": [
     {
+      "itemId": "14",
+      "itemName": "Beko 5 Pieces",
+      "price": 4,
+      "quantity": 3,
+      "total": 12
+    },
+    {
       "itemId": "1",
-      "itemName": "Product A",
+      "itemName": "Nasi Ayam Cincang",
       "price": 9.8,
-      "quantity": 1,
-      "total": 9.8
+      "quantity": 2,
+      "total": 19.6
     },
     {
       "itemId": "2",
-      "itemName": "Product B",
-      "price": 54.5,
-      "quantity": 1,
-      "total": 54.5
-    },
-    {
-      "itemId": "3",
-      "itemName": "Product C",
-      "price": 20,
-      "quantity": 1,
-      "total": 20
-    },
-    {
-      "itemId": "4",
-      "itemName": "Product D",
-      "price": 35.3,
-      "quantity": 1,
-      "total": 35.3
-    },
-    {
-      "itemId": "5",
-      "itemName": "Product E",
-      "price": 12.3,
-      "quantity": 1,
-      "total": 12.3
+      "itemName": "Nasi   Sup Daging",
+      "price": 10.5,
+      "quantity": 2,
+      "total": 21
     }
   ],
-  "totalPrice": "131.90"
+  "totalPrice": "52.60",
+  "orderReceipt": "C:\\fakepath\\Screenshot 2023-11-06 165513.png"
 }
