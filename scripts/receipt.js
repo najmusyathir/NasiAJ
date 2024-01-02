@@ -111,8 +111,7 @@ finishBtn.addEventListener("click", handleFormSubmission);
 
 function displayOrderDetails(orderDetails) {
   const receiptContainer = document.getElementById("receipt-container");
-  receiptContainer.innerHTML = "<h2>Your Order Details:</h2>";
-
+  
   if (orderDetails && orderDetails.cartItems.length > 0) {
     const ul = document.createElement("ul");
 
@@ -127,9 +126,7 @@ function displayOrderDetails(orderDetails) {
     receiptContainer.appendChild(ul);
 
     // Display total price
-    receiptContainer.innerHTML += `<p>Total Price: RM${orderDetails.totalPrice}</p>`;
-    receiptContainer.innerHTML +=
-      "<img style='width: 30%;height: 100%;' src='../assets/qr_mb.jpg' /><img style='width: 30%;height: 100%;' src='../assets/qr_tng.jpg' />";
+    receiptContainer.innerHTML += `<p><strong>Total Price: RM${orderDetails.totalPrice}</strong></p>`;
   } else {
     receiptContainer.innerHTML += "<p>No items in the order.</p>";
   }

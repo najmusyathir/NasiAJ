@@ -1,56 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles.css">
     <title>Receipt</title>
+
     <style>
-        /* Add your own styles here */
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
+            background: white;
+            height: auto;
+            padding: 0;
+            margin: 0;
 
-        .receipt {
-            border: 1px solid #ccc;
-            padding: 20px;
-            margin-top: 20px;
-        }
+            display: flex;
+            justify-content: center;
+            align-items: center;
 
-        .qr {
-            border: 1px solid #ccc;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
+            * {
+                color: black;
+            }
 
-        form {
-            margin-top: 20px;
         }
     </style>
+
 </head>
+
 <body>
-    <h1>Order Receipt</h1>
-    <div class="receipt" id="receipt-container">
-        <div class="qr" id="qr-container"></div>
+    <div class="flex_col">
+
+        <div class="receipt_page">
+            <h2>
+                Your order details:
+            </h2>
+            <div class="flex_row">
+                <div class="flex_col">
+
+                    <div class="receipt" id="receipt-container">
+                    </div>
+
+                    <form id="customer-form">
+                        <div class="flex_col">
+                            <div>
+                                <label for="customer-name">Customer Name:</label>
+                                <input type="text" id="customer-name" name="customer-name" required />
+                            </div>
+
+                            <div>
+                                <label for="cust-phone">Customer Phone:</label>
+                                <input type="tel" id="cust-phone" name="cust-phone" required />
+                            </div>
+
+                            <div>
+
+                                <label for="cust-address">Customer Address:</label>
+                                <input type="text" id="cust-address" name="cust-address" required />
+                            </div>
+
+                            <div>
+                                <label for="customer-pay">Payment Receipt:</label>
+                                <input type="file" id="customer-pay" name="customer-pay" required />
+                            </div>
+
+                            <button type="button" id="finish-btn">Finish</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="qr_container">
+                    <div class="flex_row">
+                        <img src="../assets/qr_mb.jpg" alt="qr_maybank" />
+                        <img src="../assets/qr_tng.jpg" alt="qr_tng" />
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
-
-    <form id="customer-form">
-        <label for="customer-name">Customer Name:</label>
-        <input type="text" id="customer-name" name="customer-name" required>
-
-        <label for="cust-phone">Customer Phone:</label>
-        <input type="tel" id="cust-phone" name="cust-phone" required>
-
-        <label for="cust-address">Customer Address:</label>
-        <input type="text" id="cust-address" name="cust-address" required>
-        
-        <label for="customer-pay">Payment Receipt:</label>
-        <input type="file" id="customer-pay" name="customer-pay" required>
-
-        <button type="button" id="finish-btn">Finish</button>
-
-    </form>
-
-    <script type="module" src="/scripts/receipt.js"></script>
+    <script type="module" src="../scripts/receipt.js"></script>
 </body>
+
 </html>
