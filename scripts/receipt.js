@@ -9,7 +9,6 @@ function getCurrentDateTimeInMalaysia() {
   return malaysiaTime.toISOString();
 }
 
-
 function encodeFileToBase64(file, callback) {
   const reader = new FileReader();
 
@@ -78,6 +77,9 @@ function handleFormSubmission() {
 
     console.log(jsonContent);
 
+    const loadingSpinner = document.getElementById("loading-spinner");
+    loadingSpinner.style.display = "block"; 
+
     fetch(
       "https://nasi-aj-backend-service.onrender.com/nasi_aj/api/v2/submitOrder",
       {
@@ -97,17 +99,34 @@ function handleFormSubmission() {
       })
       .then((data) => {
         console.log("Order submitted successfully:", data);
-        alert("Order completed. Thank you!");
-      })
+      // Clear orderDetails from localStorage
+        localStorage.removeItem("orderDetails");
+      // Show the order completion message
+      
+       const orderCompletionMessage = document.getElementById("order-completion-message");
+       orderCompletionMessage.style.display = "block";
+
+         // Redirect to home page after a delay (adjust the delay as needed)
+         setTimeout(() => {
+             window.location.href = "home.html";
+         }, 3000); // 3000 milliseconds (3 seconds)
+       })
       .catch((error) => {
         console.error("Error submitting order:", error);
         alert("Error submitting order. Please try again.");
+      })
+      .finally(() => {
+        loadingSpinner.style.display = "none"; // Hide the loading spinner after fetch completes
       });
   });
 }
 
 const finishBtn = document.getElementById("finish-btn");
 finishBtn.addEventListener("click", handleFormSubmission);
+
+function closePopup() {
+  window.close();
+}
 
 function displayOrderDetails(orderDetails) {
   const receiptContainer = document.getElementById("receipt-container");

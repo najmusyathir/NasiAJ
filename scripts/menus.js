@@ -1,6 +1,14 @@
 import { productsData } from "../data/products.js";
 
-let cartItems = [];
+const storedOrderDetailsJson = localStorage.getItem("orderDetails");
+let storedOrderDetails;
+
+if (storedOrderDetailsJson) {
+    storedOrderDetails = JSON.parse(storedOrderDetailsJson);
+}
+
+let cartItems = storedOrderDetails ? storedOrderDetails.cartItems : [];
+
 let orderDetails;
 
 function addToCart(itemId, itemName, price, quantity) {
@@ -118,7 +126,6 @@ function clearCart() {
 
   const ckoutbtn = document.getElementById("checkout");
   ckoutbtn.addEventListener("click", function () {
-    alert("Checkout completed");
     const cartList = document.getElementById("cart-items");
     const totalElement = document.getElementById("total");
     cartList.innerHTML = "";
@@ -131,8 +138,10 @@ function clearCart() {
     cartItems = [];
     updateCart();
 
-    window.location.href =
-      "../html/receipt.html?orderDetails=" + JSON.stringify(orderDetails);
+    window.location.href = "../html/receipt.html?orderDetails=" + JSON.stringify(orderDetails);
+     // Add the following code to update localStorage
+     const orderDetailsJson = JSON.stringify(orderDetails);
+     localStorage.setItem("orderDetails", orderDetailsJson);
   });
 }
 

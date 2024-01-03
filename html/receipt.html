@@ -13,7 +13,7 @@
             height: auto;
             padding: 0;
             margin: 0;
-
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -23,6 +23,13 @@
             }
 
         }
+        #loading-spinner {
+            position: fixed;
+            top: 50vh;
+            left: 50vw;
+            transform: translate(-50%, -50%);
+            z-index: 1; /* Higher z-index to make it appear on top of other elements */
+        }       
     </style>
 
 </head>
@@ -63,10 +70,22 @@
                                 <input type="file" id="customer-pay" name="customer-pay" required />
                             </div>
 
-                            <button type="button" id="finish-btn">Finish</button>
+                            <button type="button" id="finish-btn">Checkout</button>
+                            <button id="return-to-menus-btn">Return to Menu</button>
+
                         </div>
+                            <div class="lds-facebook" id="loading-spinner" style="display: none;">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                              </div>
+                       
                     </form>
-                </div>
+                         <!-- Add this element for the order completion message -->
+                    <div id="order-completion-message" style="display: none;">
+                        <h2>Your order has been completed!</h2>
+                        </div>
+                    </div>
 
                 <div class="qr_container">
                     <div class="flex_row">
@@ -80,6 +99,24 @@
         </div>
 
     </div>
+    <script>
+        // Retrieve orderDetails from the query parameter in the URL
+        const searchParams = new URLSearchParams(window.location.search);
+        const orderDetailsParam = searchParams.get("orderDetails");
+        const orderDetails = JSON.parse(orderDetailsParam);
+        const orderDetailsJson = JSON.stringify(orderDetails);
+        localStorage.setItem("orderDetails", orderDetailsJson);
+
+        const returnToMenusBtn = document.getElementById("return-to-menus-btn");
+    
+        returnToMenusBtn.addEventListener("click", () => {
+          // Retrieve the order details from localStorage
+          console.log(orderDetails);
+          // Redirect to menus.html
+          //window.location.href = "menus.html";
+          window.location.href = "../html/menus.html?orderDetails=" + JSON.stringify(orderDetails);
+        });
+      </script>
     <script type="module" src="../scripts/receipt.js"></script>
 </body>
 
