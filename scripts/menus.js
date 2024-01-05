@@ -2,6 +2,7 @@ import { productsData } from "../data/products.js";
 
 const storedOrderDetailsJson = localStorage.getItem("orderDetails");
 let storedOrderDetails;
+let deliveryType;
 
 if (storedOrderDetailsJson) {
     storedOrderDetails = JSON.parse(storedOrderDetailsJson);
@@ -30,6 +31,25 @@ function addToCart(itemId, itemName, price, quantity) {
   updateCart();
 }
 
+const deliveryTypeDropdown = document.getElementById("delivery-type");
+
+// Load the saved deliveryType from localStorage
+let savedDeliveryType = localStorage.getItem("deliveryType");
+deliveryType = savedDeliveryType || "DineIn"; // Default to "dine" if not set
+
+// Set the initial value of the dropdown
+deliveryTypeDropdown.value = deliveryType;
+
+deliveryTypeDropdown.addEventListener("change", function () {
+  // Update the deliveryType variable
+  deliveryType = this.value;
+  
+  localStorage.setItem("deliveryType", deliveryType);
+
+  // Call updateCart to reflect the change immediately
+  updateCart();
+});
+  
 function updateCart() {
   const cartList = document.getElementById("cart-items");
   const totalElement = document.getElementById("total");
@@ -61,6 +81,11 @@ function updateCart() {
     totalPrice += item.total;
   });
 
+   // Add additional cost for COD
+   if (deliveryType === "Cod(RM5)") {
+    totalPrice += 5;
+  }
+  
   totalElement.textContent = totalPrice.toFixed(2);
 
   const quantityButtons = document.querySelectorAll(".quantity-btn");
@@ -126,13 +151,17 @@ function clearCart() {
 
   const ckoutbtn = document.getElementById("checkout");
   ckoutbtn.addEventListener("click", function () {
+    const deliveryType = document.getElementById("delivery-type").value;
     const cartList = document.getElementById("cart-items");
     const totalElement = document.getElementById("total");
+
     cartList.innerHTML = "";
     orderDetails = {
       cartItems: [...cartItems],
       totalPrice: totalElement.textContent,
+      deliveryType: deliveryType,
     };
+
     totalElement.textContent = 0;
 
     cartItems = [];

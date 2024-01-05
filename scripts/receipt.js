@@ -39,6 +39,7 @@ function handleFormSubmission() {
     totalPrice: orderDetails.totalPrice,
     orderReceipt: '', // Initialize orderReceipt
     fileType: '', 
+    orderType: orderDetails.deliveryType, // Include deliveryType
   };
 
   const orderReceiptFile = orderReceiptInput.files[0];
@@ -106,9 +107,9 @@ function handleFormSubmission() {
        const orderCompletionMessage = document.getElementById("order-completion-message");
        orderCompletionMessage.style.display = "block";
 
-         // Redirect to home page after a delay (adjust the delay as needed)
+        // Redirect to home page after a delay (adjust the delay as needed)
          setTimeout(() => {
-             window.location.href = "home.html";
+             window.location.href = "../index.html";
          }, 3000); // 3000 milliseconds (3 seconds)
        })
       .catch((error) => {
@@ -145,6 +146,7 @@ function displayOrderDetails(orderDetails) {
     receiptContainer.appendChild(ul);
 
     // Display total price
+    receiptContainer.innerHTML += `<p><strong>Order Type: ${orderDetails.deliveryType}</strong></p>`;
     receiptContainer.innerHTML += `<p><strong>Total Price: RM${orderDetails.totalPrice}</strong></p>`;
   } else {
     receiptContainer.innerHTML += "<p>No items in the order.</p>";
