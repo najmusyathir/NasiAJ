@@ -1377,4 +1377,18 @@ img {
     cursor: pointer;
   }
   
+.delivery-type {
+    bottom: 0px;
+    width: 160px;
+    padding: 20px;
+    background-color: #7E1612;
+    color: #FFE2C4;
+    font-size: 1.5rem;
+
+        color: #7E1612;
+        padding: 10px 15px;
+        background: #FFE2C4;
+        border: 0px;
+        border-radius: 15px;
+}
   
