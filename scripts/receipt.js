@@ -1,14 +1,16 @@
+// Function to generate a unique order ID
 function generateOrderId() {
   return "ORD" + Date.now().toString(36).toUpperCase();
 }
 
+// Function to get the current date and time in Malaysia (UTC+8)
 function getCurrentDateTimeInMalaysia() {
   const now = new Date();
   const malaysiaTime = new Date(now.getTime() + (8 * 60 * 60 * 1000)); // UTC+8 in milliseconds
-
   return malaysiaTime.toISOString();
 }
 
+// Function to encode a file to base64
 function encodeFileToBase64(file, callback) {
   const reader = new FileReader();
 
@@ -19,7 +21,9 @@ function encodeFileToBase64(file, callback) {
   reader.readAsDataURL(file);
 }
 
+// Event handler for form submission
 function handleFormSubmission() {
+  // Retrieving form input values
   const customerName = document.getElementById("customer-name").value;
   const phoneNumber = document.getElementById("cust-phone").value;
   const address = document.getElementById("cust-address").value;
@@ -27,6 +31,7 @@ function handleFormSubmission() {
   const orderId = generateOrderId();
   const orderDate = getCurrentDateTimeInMalaysia();
 
+  // Creating a new order object
   const newOrder = {
     orderId,
     orderDate,
@@ -55,32 +60,24 @@ function handleFormSubmission() {
 
   // Encode the file to base64
   encodeFileToBase64(orderReceiptFile, function (base64Data) {
-    
     // Update orderReceipt with the encoded data
     newOrder.orderReceipt = base64Data;
 
     // Continue with the rest of the code (inside the callback)
     const jsonContent = JSON.stringify(newOrder, null, 2);
 
-    // const blob = new Blob([jsonContent], { type: "application/json" });
-
+    // Create a link to download the JSON file
     const link = document.createElement("a");
-
-    // link.href = URL.createObjectURL(blob);
-
     link.download = "order.json";
 
-    document.body.appendChild(link);
-
-    // link.click();
-
-    document.body.removeChild(link);
-
+    // Display the order details in the console
     console.log(jsonContent);
 
+    // Display loading spinner during fetch
     const loadingSpinner = document.getElementById("loading-spinner");
     loadingSpinner.style.display = "block"; 
 
+    // Send a POST request to submit the order
     fetch(
       "https://nasi-aj-backend-service.onrender.com/nasi_aj/api/v2/submitOrder",
       {
@@ -100,41 +97,44 @@ function handleFormSubmission() {
       })
       .then((data) => {
         console.log("Order submitted successfully:", data);
-      // Clear orderDetails from localStorage
+        // Clear orderDetails from localStorage
         localStorage.removeItem("orderDetails");
-      // Show the order completion message
-      
-       const orderCompletionMessage = document.getElementById("order-completion-message");
-       orderCompletionMessage.style.display = "flex";
+        // Show the order completion message
+        const orderCompletionMessage = document.getElementById("order-completion-message");
+        orderCompletionMessage.style.display = "flex";
 
-        // Redirect to home page after a delay (adjust the delay as needed)
-         setTimeout(() => {
-             window.location.href = "../index.html";
-         }, 6000); // 3000 milliseconds (3 seconds)
-       })
+        // Redirect to home page after a delay
+        setTimeout(() => {
+          window.location.href = "../index.html";
+        }, 6000); // 6000 milliseconds (6 seconds)
+      })
       .catch((error) => {
         console.error("Error submitting order:", error);
         alert("Error submitting order. Please try again.");
       })
       .finally(() => {
-        loadingSpinner.style.display = "none"; // Hide the loading spinner after fetch completes
+        // Hide the loading spinner after fetch completes
+        loadingSpinner.style.display = "none";
       });
   });
 }
 
+// Event listener for the "Finish" button
 const finishBtn = document.getElementById("finish-btn");
 finishBtn.addEventListener("click", handleFormSubmission);
 
+// Function to close the popup window
 function closePopup() {
   window.close();
 }
 
+// Function to display order details on the receipt
 function displayOrderDetails(orderDetails) {
   const receiptContainer = document.getElementById("receipt-container");
   
   if (orderDetails && orderDetails.cartItems.length > 0) {
+    // Create a list element for each item in the order
     const ul = document.createElement("ul");
-
     orderDetails.cartItems.forEach((item) => {
       const li = document.createElement("li");
       li.textContent = `${item.itemName} - RM${item.price.toFixed(2)} x ${
@@ -143,12 +143,14 @@ function displayOrderDetails(orderDetails) {
       ul.appendChild(li);
     });
 
+    // Append the list to the receipt container
     receiptContainer.appendChild(ul);
 
-    // Display total price
+    // Display total price and order type
     receiptContainer.innerHTML += `<p><strong>Order Type: ${orderDetails.deliveryType}</strong></p>`;
     receiptContainer.innerHTML += `<p><strong>Total Price: RM${orderDetails.totalPrice}</strong></p>`;
   } else {
+    // Display a message if there are no items in the order
     receiptContainer.innerHTML += "<p>No items in the order.</p>";
   }
 }
