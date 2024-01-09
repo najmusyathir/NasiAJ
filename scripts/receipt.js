@@ -105,12 +105,12 @@ function handleFormSubmission() {
       // Show the order completion message
       
        const orderCompletionMessage = document.getElementById("order-completion-message");
-       orderCompletionMessage.style.display = "block";
+       orderCompletionMessage.style.display = "flex";
 
         // Redirect to home page after a delay (adjust the delay as needed)
          setTimeout(() => {
              window.location.href = "../index.html";
-         }, 3000); // 3000 milliseconds (3 seconds)
+         }, 6000); // 3000 milliseconds (3 seconds)
        })
       .catch((error) => {
         console.error("Error submitting order:", error);

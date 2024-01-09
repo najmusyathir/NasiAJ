@@ -23,13 +23,15 @@
             }
 
         }
+
         #loading-spinner {
             position: fixed;
             top: 50vh;
             left: 50vw;
             transform: translate(-50%, -50%);
-            z-index: 1; /* Higher z-index to make it appear on top of other elements */
-        }       
+            z-index: 1;
+            /* Higher z-index to make it appear on top of other elements */
+        }
     </style>
 
 </head>
@@ -74,18 +76,21 @@
                             <button id="return-to-menus-btn">Return to Menu</button>
 
                         </div>
-                            <div class="lds-facebook" id="loading-spinner" style="display: none;">
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                              </div>
-                       
-                    </form>
-                         <!-- Add this element for the order completion message -->
-                    <div id="order-completion-message" style="display: none;">
-                        <h2>Your order has been completed!</h2>
+                        <div class="lds-facebook" id="loading-spinner" style="display: none;">
+                            <div></div>
+                            <div></div>
+                            <div></div>
                         </div>
+
+                    </form>
+                    <!-- Add this element for the order completion message -->
+                    <div id="order-completion-message" style="display: none;">
+                        <h2>
+                            <strong>Your order has been completed!</strong>
+                        </h2>
+                        <p>Redirect to homepage...</p>
                     </div>
+                </div>
 
                 <div class="qr_container">
                     <div class="flex_row">
@@ -108,15 +113,15 @@
         localStorage.setItem("orderDetails", orderDetailsJson);
 
         const returnToMenusBtn = document.getElementById("return-to-menus-btn");
-    
+
         returnToMenusBtn.addEventListener("click", () => {
-          // Retrieve the order details from localStorage
-          console.log(orderDetails);
-          // Redirect to menus.html
-          //window.location.href = "menus.html";
-          window.location.href = "../html/menus.html?orderDetails=" + JSON.stringify(orderDetails);
+            // Retrieve the order details from localStorage
+            console.log(orderDetails);
+            // Redirect to menus.html
+            //window.location.href = "menus.html";
+            window.location.href = "../html/menus.html?orderDetails=" + JSON.stringify(orderDetails);
         });
-      </script>
+    </script>
     <script type="module" src="../scripts/receipt.js"></script>
 </body>
 
